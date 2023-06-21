@@ -1,0 +1,11 @@
+{
+  "goerli": {
+    "AutoPay": {
+      "address": "0x91486b6Fa9335C9C51DA040bc01a23c536d3abf2",
+      "startBlock": 9110364
+    },
+    "Treasury": {
+      "address": "0x67434F025647CB6994b36251fcdC5AC62907dcBA"
+    }
+  }
+}

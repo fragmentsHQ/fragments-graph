@@ -1,0 +1,211 @@
+type AdminChanged @entity(immutable: true) {
+	id: String!
+	previousAdmin: Bytes! # address
+	newAdmin: Bytes! # address
+	blockNumber: BigInt!
+	blockTimestamp: BigInt!
+	transactionHash: Bytes!
+}
+
+type BeaconUpgraded @entity(immutable: true) {
+	id: String!
+	beacon: Bytes! # address
+	blockNumber: BigInt!
+	blockTimestamp: BigInt!
+	transactionHash: Bytes!
+}
+
+type FundsDeposited @entity(immutable: true) {
+	id: String!
+	sender: Bytes! # address
+	token: Bytes! # address
+	amount: BigInt! # uint256
+	blockNumber: BigInt!
+	blockTimestamp: BigInt!
+	transactionHash: Bytes!
+}
+
+type FundsWithdrawn @entity(immutable: true) {
+	id: String!
+	receiver: Bytes! # address
+	initiator: Bytes! # address
+	token: Bytes! # address
+	amount: BigInt! # uint256
+	blockNumber: BigInt!
+	blockTimestamp: BigInt!
+	transactionHash: Bytes!
+}
+
+type Initialized @entity(immutable: true) {
+	id: String!
+	version: Int! # uint8
+	blockNumber: BigInt!
+	blockTimestamp: BigInt!
+	transactionHash: Bytes!
+}
+
+type JobCreated @entity(immutable: true) {
+	id: String!
+	_taskCreator: Bytes! # address
+	_jobId: Bytes! # bytes32
+	_gelatoTaskId: Bytes! # bytes32
+	_to: Bytes! # address
+	_amount: BigInt! # uint256
+	_fromToken: Bytes! # address
+	_toToken: Bytes! # address
+	_toChain: BigInt! # uint256
+	_destinationDomain: BigInt! # uint32
+	_destinationContract: Bytes! # address
+	_cycles: BigInt! # uint256
+	_startTime: BigInt! # uint256
+	_interval: BigInt! # uint256
+	option: Int! # uint8
+	blockNumber: BigInt!
+	blockTimestamp: BigInt!
+	transactionHash: Bytes!
+}
+
+type JobCreated1 @entity(immutable: true) {
+	id: String!
+	_taskCreator: Bytes! # address
+	_jobId: Bytes! # bytes32
+	_gelatoTaskId: Bytes! # bytes32
+	_to: Bytes! # address
+	_amount: BigInt! # uint256
+	_price: BigInt! # uint256
+	_fromToken: Bytes! # address
+	_toToken: Bytes! # address
+	_toChain: BigInt! # uint256
+	_destinationDomain: BigInt! # uint32
+	_destinationContract: Bytes! # address
+	_cycles: BigInt! # uint256
+	_startTime: BigInt! # uint256
+	_interval: BigInt! # uint256
+	option: Int! # uint8
+	blockNumber: BigInt!
+	blockTimestamp: BigInt!
+	transactionHash: Bytes!
+}
+
+type JobSuccess @entity(immutable: true) {
+	id: String!
+	txFee: BigInt! # uint256
+	feeToken: Bytes! # address
+	execAddress: Bytes! # address
+	execData: Bytes! # bytes
+	taskId: Bytes! # bytes32
+	callSuccess: Boolean! # bool
+	blockNumber: BigInt!
+	blockTimestamp: BigInt!
+	transactionHash: Bytes!
+}
+
+type OwnershipTransferred @entity(immutable: true) {
+	id: String!
+	previousOwner: Bytes! # address
+	newOwner: Bytes! # address
+	blockNumber: BigInt!
+	blockTimestamp: BigInt!
+	transactionHash: Bytes!
+}
+
+type Upgraded @entity(immutable: true) {
+	id: String!
+	implementation: Bytes! # address
+	blockNumber: BigInt!
+	blockTimestamp: BigInt!
+	transactionHash: Bytes!
+}
+
+type XReceiveData @entity(immutable: true) {
+	id: String!
+	originSender: Bytes! # address
+	origin: BigInt! # uint32
+	asset: Bytes! # address
+	amount: BigInt! # uint256
+	transferId: Bytes! # bytes32
+	receiveTimestamp: BigInt! # uint256
+	senderAccount: Bytes! # address
+	receiverAccount: Bytes! # address
+	blockNumber: BigInt!
+	blockTimestamp: BigInt!
+	transactionHash: Bytes!
+}
+
+type XTransferData @entity(immutable: true) {
+	id: String!
+	sender: Bytes! # address
+	receiver: Bytes! # address
+	fromToken: Bytes! # address
+	toToken: Bytes! # address
+	destinationContract: Bytes! # address
+	amount: BigInt! # uint256
+	startTime: BigInt! # uint256
+	relayerFeeInTransactingAsset: BigInt! # uint256
+	destinationDomain: BigInt! # uint32
+	blockNumber: BigInt!
+	blockTimestamp: BigInt!
+	transactionHash: Bytes!
+}
+type TreasuryAdminChanged @entity(immutable: true) {
+	id: String!
+	previousAdmin: Bytes! # address
+	newAdmin: Bytes! # address
+	blockNumber: BigInt!
+	blockTimestamp: BigInt!
+	transactionHash: Bytes!
+}
+
+type TreasuryBeaconUpgraded @entity(immutable: true) {
+	id: String!
+	beacon: Bytes! # address
+	blockNumber: BigInt!
+	blockTimestamp: BigInt!
+	transactionHash: Bytes!
+}
+
+type TreasuryFundsDeposited @entity(immutable: true) {
+	id: String!
+	sender: Bytes! # address
+	token: Bytes! # address
+	amount: BigInt! # uint256
+	blockNumber: BigInt!
+	blockTimestamp: BigInt!
+	transactionHash: Bytes!
+}
+
+type TreasuryFundsWithdrawn @entity(immutable: true) {
+	id: String!
+	receiver: Bytes! # address
+	initiator: Bytes! # address
+	token: Bytes! # address
+	amount: BigInt! # uint256
+	blockNumber: BigInt!
+	blockTimestamp: BigInt!
+	transactionHash: Bytes!
+}
+
+type TreasuryInitialized @entity(immutable: true) {
+	id: String!
+	version: Int! # uint8
+	blockNumber: BigInt!
+	blockTimestamp: BigInt!
+	transactionHash: Bytes!
+}
+
+type TreasuryOwnershipTransferred @entity(immutable: true) {
+	id: String!
+	previousOwner: Bytes! # address
+	newOwner: Bytes! # address
+	blockNumber: BigInt!
+	blockTimestamp: BigInt!
+	transactionHash: Bytes!
+}
+
+type TreasuryUpgraded @entity(immutable: true) {
+	id: String!
+	implementation: Bytes! # address
+	blockNumber: BigInt!
+	blockTimestamp: BigInt!
+	transactionHash: Bytes!
+}
