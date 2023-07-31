@@ -1,11 +1,31 @@
 {
   "goerli": {
     "AutoPay": {
-      "address": "0x91486b6Fa9335C9C51DA040bc01a23c536d3abf2",
+      "address": "0xA8e3315CE15cADdB4616AefD073e4CBF002C5D73",
       "startBlock": 9110364
     },
     "Treasury": {
-      "address": "0x67434F025647CB6994b36251fcdC5AC62907dcBA"
+      "address": "0x6e2b6959c81183dCe1EB5819E573092bee28511b"
+    }
+  },
+  "mumbai": {
+    "AutoPay": {
+      "address": "0x7f464d4f3D46552F936cb68c21a0A2dB3E32919F",
+      "startBlock": 36362352
+    },
+    "Treasury": {
+      "address": "0x1Ff5C1D4713772C5AA17d551039d9599Bc65C31C",
+      "startBlock": 36389089
+    }
+  },
+  "matic": {
+    "AutoPay": {
+      "address": "0xD5deC37fcA54a234Ea7b4AeA41657171381eDE76",
+      "startBlock": 45178972
+    },
+    "Treasury": {
+      "address": "0xa0484988a393527eF08eCbc76c2C01a6386A042A",
+      "startBlock": 45179555
     }
   }
 }

@@ -7,7 +7,6 @@ import {
   FundsWithdrawn,
   Initialized,
   JobCreated,
-  JobCreated1,
   JobSuccess,
   OwnershipTransferred,
   Upgraded,
@@ -210,108 +209,7 @@ export function createJobCreatedEvent(
   return jobCreatedEvent
 }
 
-export function createJobCreated1Event(
-  _taskCreator: Address,
-  _jobId: Bytes,
-  _gelatoTaskId: Bytes,
-  _to: Address,
-  _amount: BigInt,
-  _price: BigInt,
-  _fromToken: Address,
-  _toToken: Address,
-  _toChain: BigInt,
-  _destinationDomain: BigInt,
-  _destinationContract: Address,
-  _cycles: BigInt,
-  _startTime: BigInt,
-  _interval: BigInt,
-  option: i32
-): JobCreated1 {
-  let jobCreated1Event = changetype<JobCreated1>(newMockEvent())
 
-  jobCreated1Event.parameters = new Array()
-
-  jobCreated1Event.parameters.push(
-    new ethereum.EventParam(
-      "_taskCreator",
-      ethereum.Value.fromAddress(_taskCreator)
-    )
-  )
-  jobCreated1Event.parameters.push(
-    new ethereum.EventParam("_jobId", ethereum.Value.fromFixedBytes(_jobId))
-  )
-  jobCreated1Event.parameters.push(
-    new ethereum.EventParam(
-      "_gelatoTaskId",
-      ethereum.Value.fromFixedBytes(_gelatoTaskId)
-    )
-  )
-  jobCreated1Event.parameters.push(
-    new ethereum.EventParam("_to", ethereum.Value.fromAddress(_to))
-  )
-  jobCreated1Event.parameters.push(
-    new ethereum.EventParam(
-      "_amount",
-      ethereum.Value.fromUnsignedBigInt(_amount)
-    )
-  )
-  jobCreated1Event.parameters.push(
-    new ethereum.EventParam("_price", ethereum.Value.fromUnsignedBigInt(_price))
-  )
-  jobCreated1Event.parameters.push(
-    new ethereum.EventParam(
-      "_fromToken",
-      ethereum.Value.fromAddress(_fromToken)
-    )
-  )
-  jobCreated1Event.parameters.push(
-    new ethereum.EventParam("_toToken", ethereum.Value.fromAddress(_toToken))
-  )
-  jobCreated1Event.parameters.push(
-    new ethereum.EventParam(
-      "_toChain",
-      ethereum.Value.fromUnsignedBigInt(_toChain)
-    )
-  )
-  jobCreated1Event.parameters.push(
-    new ethereum.EventParam(
-      "_destinationDomain",
-      ethereum.Value.fromUnsignedBigInt(_destinationDomain)
-    )
-  )
-  jobCreated1Event.parameters.push(
-    new ethereum.EventParam(
-      "_destinationContract",
-      ethereum.Value.fromAddress(_destinationContract)
-    )
-  )
-  jobCreated1Event.parameters.push(
-    new ethereum.EventParam(
-      "_cycles",
-      ethereum.Value.fromUnsignedBigInt(_cycles)
-    )
-  )
-  jobCreated1Event.parameters.push(
-    new ethereum.EventParam(
-      "_startTime",
-      ethereum.Value.fromUnsignedBigInt(_startTime)
-    )
-  )
-  jobCreated1Event.parameters.push(
-    new ethereum.EventParam(
-      "_interval",
-      ethereum.Value.fromUnsignedBigInt(_interval)
-    )
-  )
-  jobCreated1Event.parameters.push(
-    new ethereum.EventParam(
-      "option",
-      ethereum.Value.fromUnsignedBigInt(BigInt.fromI32(option))
-    )
-  )
-
-  return jobCreated1Event
-}
 
 export function createJobSuccessEvent(
   txFee: BigInt,

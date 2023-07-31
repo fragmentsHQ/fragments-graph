@@ -59,28 +59,7 @@ type JobCreated @entity(immutable: true) {
 	_cycles: BigInt! # uint256
 	_startTime: BigInt! # uint256
 	_interval: BigInt! # uint256
-	option: Int! # uint8
-	blockNumber: BigInt!
-	blockTimestamp: BigInt!
-	transactionHash: Bytes!
-}
-
-type JobCreated1 @entity(immutable: true) {
-	id: String!
-	_taskCreator: Bytes! # address
-	_jobId: Bytes! # bytes32
-	_gelatoTaskId: Bytes! # bytes32
-	_to: Bytes! # address
-	_amount: BigInt! # uint256
-	_price: BigInt! # uint256
-	_fromToken: Bytes! # address
-	_toToken: Bytes! # address
-	_toChain: BigInt! # uint256
-	_destinationDomain: BigInt! # uint32
-	_destinationContract: Bytes! # address
-	_cycles: BigInt! # uint256
-	_startTime: BigInt! # uint256
-	_interval: BigInt! # uint256
+	_isForwardPaying: Boolean # uint256
 	option: Int! # uint8
 	blockNumber: BigInt!
 	blockTimestamp: BigInt!
@@ -147,6 +126,20 @@ type XTransferData @entity(immutable: true) {
 	blockTimestamp: BigInt!
 	transactionHash: Bytes!
 }
+
+type ExecutedSourceChain @entity(immutable : true) {
+	id: String!
+	_jobId: Bytes! # bytes32
+	_from: Bytes! # address
+	_timesExecuted: BigInt! # uint256
+	_fundsUsed: BigInt! # uint256
+	_amountOut: BigInt! # uint256
+	_isForwardPaying: Boolean # uint256
+	blockNumber: BigInt!
+	blockTimestamp: BigInt!
+	transactionHash: Bytes!
+}
+
 type TreasuryAdminChanged @entity(immutable: true) {
 	id: String!
 	previousAdmin: Bytes! # address

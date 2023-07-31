@@ -5,12 +5,12 @@ import {
   FundsWithdrawn as FundsWithdrawnEvent,
   Initialized as InitializedEvent,
   JobCreated as JobCreatedEvent,
-  JobCreated1 as JobCreated1Event,
   JobSuccess as JobSuccessEvent,
   OwnershipTransferred as OwnershipTransferredEvent,
   Upgraded as UpgradedEvent,
   XReceiveData as XReceiveDataEvent,
-  XTransferData as XTransferDataEvent
+  XTransferData as XTransferDataEvent,
+  ExecutedSourceChain as ExecutedSourceChainEvent
 } from "../generated/AutoPay/AutoPay"
 import {
   AdminChanged,
@@ -19,17 +19,25 @@ import {
   FundsWithdrawn,
   Initialized,
   JobCreated,
-  JobCreated1,
   JobSuccess,
   OwnershipTransferred,
   Upgraded,
   XReceiveData,
-  XTransferData
+  XTransferData,
+  ExecutedSourceChain
 } from "../generated/schema"
+
+// event ExecutedSourceChain(
+//   bytes32 indexed _jobId,
+//   address indexed _from,
+//   uint256 _timesExecuted,
+//   uint256 _fundsUsed,
+//   uint256 _amountOut
+// );
 
 export function handleAdminChanged(event: AdminChangedEvent): void {
   let entity = new AdminChanged(
-    event.transaction.hash.toHex()
+    event.transaction.hash.toHex() + "-" + event.logIndex.toString()
   )
   entity.previousAdmin = event.params.previousAdmin
   entity.newAdmin = event.params.newAdmin
@@ -43,7 +51,7 @@ export function handleAdminChanged(event: AdminChangedEvent): void {
 
 export function handleBeaconUpgraded(event: BeaconUpgradedEvent): void {
   let entity = new BeaconUpgraded(
-    event.transaction.hash.toHex()
+    event.transaction.hash.toHex() + "-" + event.logIndex.toString()
   )
   entity.beacon = event.params.beacon
 
@@ -56,7 +64,7 @@ export function handleBeaconUpgraded(event: BeaconUpgradedEvent): void {
 
 export function handleFundsDeposited(event: FundsDepositedEvent): void {
   let entity = new FundsDeposited(
-    event.transaction.hash.toHex()
+    event.transaction.hash.toHex() + "-" + event.logIndex.toString()
   )
   entity.sender = event.params.sender
   entity.token = event.params.token
@@ -71,7 +79,7 @@ export function handleFundsDeposited(event: FundsDepositedEvent): void {
 
 export function handleFundsWithdrawn(event: FundsWithdrawnEvent): void {
   let entity = new FundsWithdrawn(
-    event.transaction.hash.toHex()
+    event.transaction.hash.toHex() + "-" + event.logIndex.toString()
   )
   entity.receiver = event.params.receiver
   entity.initiator = event.params.initiator
@@ -87,7 +95,7 @@ export function handleFundsWithdrawn(event: FundsWithdrawnEvent): void {
 
 export function handleInitialized(event: InitializedEvent): void {
   let entity = new Initialized(
-    event.transaction.hash.toHex()
+    event.transaction.hash.toHex() + "-" + event.logIndex.toString()
   )
   entity.version = event.params.version
 
@@ -100,7 +108,7 @@ export function handleInitialized(event: InitializedEvent): void {
 
 export function handleJobCreated(event: JobCreatedEvent): void {
   let entity = new JobCreated(
-    event.transaction.hash.toHex()
+    event.transaction.hash.toHex() + "-" + event.logIndex.toString()
   )
   entity._taskCreator = event.params._taskCreator
   entity._jobId = event.params._jobId
@@ -115,6 +123,7 @@ export function handleJobCreated(event: JobCreatedEvent): void {
   entity._cycles = event.params._cycles
   entity._startTime = event.params._startTime
   entity._interval = event.params._interval
+  entity._isForwardPaying = event.params._isForwardPaying
   entity.option = event.params.option
 
   entity.blockNumber = event.block.number
@@ -124,36 +133,10 @@ export function handleJobCreated(event: JobCreatedEvent): void {
   entity.save()
 }
 
-export function handleJobCreated1(event: JobCreated1Event): void {
-  let entity = new JobCreated1(
-    event.transaction.hash.toHex()
-  )
-  entity._taskCreator = event.params._taskCreator
-  entity._jobId = event.params._jobId
-  entity._gelatoTaskId = event.params._gelatoTaskId
-  entity._to = event.params._to
-  entity._amount = event.params._amount
-  entity._price = event.params._price
-  entity._fromToken = event.params._fromToken
-  entity._toToken = event.params._toToken
-  entity._toChain = event.params._toChain
-  entity._destinationDomain = event.params._destinationDomain
-  entity._destinationContract = event.params._destinationContract
-  entity._cycles = event.params._cycles
-  entity._startTime = event.params._startTime
-  entity._interval = event.params._interval
-  entity.option = event.params.option
-
-  entity.blockNumber = event.block.number
-  entity.blockTimestamp = event.block.timestamp
-  entity.transactionHash = event.transaction.hash
-
-  entity.save()
-}
 
 export function handleJobSuccess(event: JobSuccessEvent): void {
   let entity = new JobSuccess(
-    event.transaction.hash.toHex()
+    event.transaction.hash.toHex() + "-" + event.logIndex.toString()
   )
   entity.txFee = event.params.txFee
   entity.feeToken = event.params.feeToken
@@ -173,7 +156,7 @@ export function handleOwnershipTransferred(
   event: OwnershipTransferredEvent
 ): void {
   let entity = new OwnershipTransferred(
-    event.transaction.hash.toHex()
+    event.transaction.hash.toHex() + "-" + event.logIndex.toString()
   )
   entity.previousOwner = event.params.previousOwner
   entity.newOwner = event.params.newOwner
@@ -187,7 +170,7 @@ export function handleOwnershipTransferred(
 
 export function handleUpgraded(event: UpgradedEvent): void {
   let entity = new Upgraded(
-    event.transaction.hash.toHex()
+    event.transaction.hash.toHex() + "-" + event.logIndex.toString()
   )
   entity.implementation = event.params.implementation
 
@@ -200,7 +183,7 @@ export function handleUpgraded(event: UpgradedEvent): void {
 
 export function handleXReceiveData(event: XReceiveDataEvent): void {
   let entity = new XReceiveData(
-    event.transaction.hash.toHex()
+    event.transaction.hash.toHex() + "-" + event.logIndex.toString()
   )
   entity.originSender = event.params.originSender
   entity.origin = event.params.origin
@@ -220,7 +203,7 @@ export function handleXReceiveData(event: XReceiveDataEvent): void {
 
 export function handleXTransferData(event: XTransferDataEvent): void {
   let entity = new XTransferData(
-    event.transaction.hash.toHex()
+    event.transaction.hash.toHex() + "-" + event.logIndex.toString()
   )
   entity.sender = event.params.sender
   entity.receiver = event.params.receiver
@@ -232,6 +215,24 @@ export function handleXTransferData(event: XTransferDataEvent): void {
   entity.relayerFeeInTransactingAsset =
     event.params.relayerFeeInTransactingAsset
   entity.destinationDomain = event.params.destinationDomain
+
+  entity.blockNumber = event.block.number
+  entity.blockTimestamp = event.block.timestamp
+  entity.transactionHash = event.transaction.hash
+
+  entity.save()
+}
+
+export function handleExecutedSourceChain(event: ExecutedSourceChainEvent): void {
+  let entity = new ExecutedSourceChain(
+    event.transaction.hash.toHex() + "-" + event.logIndex.toString()
+  )
+  entity._jobId = event.params._jobId
+  entity._from = event.params._from
+  entity._timesExecuted = event.params._timesExecuted
+  entity._fundsUsed = event.params._fundsUsed
+  entity._amountOut = event.params._amountOut
+  entity._isForwardPaying = event.params._isForwardPaying
 
   entity.blockNumber = event.block.number
   entity.blockTimestamp = event.block.timestamp

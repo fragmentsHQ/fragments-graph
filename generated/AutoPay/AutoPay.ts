@@ -50,6 +50,44 @@ export class BeaconUpgraded__Params {
   }
 }
 
+export class ExecutedSourceChain extends ethereum.Event {
+  get params(): ExecutedSourceChain__Params {
+    return new ExecutedSourceChain__Params(this);
+  }
+}
+
+export class ExecutedSourceChain__Params {
+  _event: ExecutedSourceChain;
+
+  constructor(event: ExecutedSourceChain) {
+    this._event = event;
+  }
+
+  get _jobId(): Bytes {
+    return this._event.parameters[0].value.toBytes();
+  }
+
+  get _from(): Address {
+    return this._event.parameters[1].value.toAddress();
+  }
+
+  get _timesExecuted(): BigInt {
+    return this._event.parameters[2].value.toBigInt();
+  }
+
+  get _fundsUsed(): BigInt {
+    return this._event.parameters[3].value.toBigInt();
+  }
+
+  get _amountOut(): BigInt {
+    return this._event.parameters[4].value.toBigInt();
+  }
+
+  get _isForwardPaying(): boolean {
+    return this._event.parameters[5].value.toBoolean();
+  }
+}
+
 export class FundsDeposited extends ethereum.Event {
   get params(): FundsDeposited__Params {
     return new FundsDeposited__Params(this);
@@ -189,78 +227,8 @@ export class JobCreated__Params {
     return this._event.parameters[12].value.toBigInt();
   }
 
-  get option(): i32 {
-    return this._event.parameters[13].value.toI32();
-  }
-}
-
-export class JobCreated1 extends ethereum.Event {
-  get params(): JobCreated1__Params {
-    return new JobCreated1__Params(this);
-  }
-}
-
-export class JobCreated1__Params {
-  _event: JobCreated1;
-
-  constructor(event: JobCreated1) {
-    this._event = event;
-  }
-
-  get _taskCreator(): Address {
-    return this._event.parameters[0].value.toAddress();
-  }
-
-  get _jobId(): Bytes {
-    return this._event.parameters[1].value.toBytes();
-  }
-
-  get _gelatoTaskId(): Bytes {
-    return this._event.parameters[2].value.toBytes();
-  }
-
-  get _to(): Address {
-    return this._event.parameters[3].value.toAddress();
-  }
-
-  get _amount(): BigInt {
-    return this._event.parameters[4].value.toBigInt();
-  }
-
-  get _price(): BigInt {
-    return this._event.parameters[5].value.toBigInt();
-  }
-
-  get _fromToken(): Address {
-    return this._event.parameters[6].value.toAddress();
-  }
-
-  get _toToken(): Address {
-    return this._event.parameters[7].value.toAddress();
-  }
-
-  get _toChain(): BigInt {
-    return this._event.parameters[8].value.toBigInt();
-  }
-
-  get _destinationDomain(): BigInt {
-    return this._event.parameters[9].value.toBigInt();
-  }
-
-  get _destinationContract(): Address {
-    return this._event.parameters[10].value.toAddress();
-  }
-
-  get _cycles(): BigInt {
-    return this._event.parameters[11].value.toBigInt();
-  }
-
-  get _startTime(): BigInt {
-    return this._event.parameters[12].value.toBigInt();
-  }
-
-  get _interval(): BigInt {
-    return this._event.parameters[13].value.toBigInt();
+  get _isForwardPaying(): boolean {
+    return this._event.parameters[13].value.toBoolean();
   }
 
   get option(): i32 {
@@ -557,81 +525,6 @@ export class AutoPay extends ethereum.SmartContract {
     _from: Address,
     _to: Address,
     _amount: BigInt,
-    _price: BigInt,
-    _fromToken: Address,
-    _toToken: Address,
-    _toChain: BigInt,
-    _destinationDomain: BigInt,
-    _destinationContract: Address,
-    _cycles: BigInt,
-    _startTime: BigInt,
-    _interval: BigInt
-  ): Bytes {
-    let result = super.call(
-      "_getAutomateJobId",
-      "_getAutomateJobId(address,address,uint256,uint256,address,address,uint256,uint32,address,uint256,uint256,uint256):(bytes32)",
-      [
-        ethereum.Value.fromAddress(_from),
-        ethereum.Value.fromAddress(_to),
-        ethereum.Value.fromUnsignedBigInt(_amount),
-        ethereum.Value.fromUnsignedBigInt(_price),
-        ethereum.Value.fromAddress(_fromToken),
-        ethereum.Value.fromAddress(_toToken),
-        ethereum.Value.fromUnsignedBigInt(_toChain),
-        ethereum.Value.fromUnsignedBigInt(_destinationDomain),
-        ethereum.Value.fromAddress(_destinationContract),
-        ethereum.Value.fromUnsignedBigInt(_cycles),
-        ethereum.Value.fromUnsignedBigInt(_startTime),
-        ethereum.Value.fromUnsignedBigInt(_interval)
-      ]
-    );
-
-    return result[0].toBytes();
-  }
-
-  try__getAutomateJobId(
-    _from: Address,
-    _to: Address,
-    _amount: BigInt,
-    _price: BigInt,
-    _fromToken: Address,
-    _toToken: Address,
-    _toChain: BigInt,
-    _destinationDomain: BigInt,
-    _destinationContract: Address,
-    _cycles: BigInt,
-    _startTime: BigInt,
-    _interval: BigInt
-  ): ethereum.CallResult<Bytes> {
-    let result = super.tryCall(
-      "_getAutomateJobId",
-      "_getAutomateJobId(address,address,uint256,uint256,address,address,uint256,uint32,address,uint256,uint256,uint256):(bytes32)",
-      [
-        ethereum.Value.fromAddress(_from),
-        ethereum.Value.fromAddress(_to),
-        ethereum.Value.fromUnsignedBigInt(_amount),
-        ethereum.Value.fromUnsignedBigInt(_price),
-        ethereum.Value.fromAddress(_fromToken),
-        ethereum.Value.fromAddress(_toToken),
-        ethereum.Value.fromUnsignedBigInt(_toChain),
-        ethereum.Value.fromUnsignedBigInt(_destinationDomain),
-        ethereum.Value.fromAddress(_destinationContract),
-        ethereum.Value.fromUnsignedBigInt(_cycles),
-        ethereum.Value.fromUnsignedBigInt(_startTime),
-        ethereum.Value.fromUnsignedBigInt(_interval)
-      ]
-    );
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toBytes());
-  }
-
-  _getAutomateJobId1(
-    _from: Address,
-    _to: Address,
-    _amount: BigInt,
     _fromToken: Address,
     _toToken: Address,
     _toChain: BigInt,
@@ -662,7 +555,7 @@ export class AutoPay extends ethereum.SmartContract {
     return result[0].toBytes();
   }
 
-  try__getAutomateJobId1(
+  try__getAutomateJobId(
     _from: Address,
     _to: Address,
     _amount: BigInt,
@@ -710,11 +603,12 @@ export class AutoPay extends ethereum.SmartContract {
     _destinationContract: Address,
     _cycles: BigInt,
     _startTime: BigInt,
-    _interval: BigInt
+    _interval: BigInt,
+    _isForwardPaying: boolean
   ): Bytes {
     let result = super.call(
       "_getWeb3FunctionHash",
-      "_getWeb3FunctionHash(address,address,uint256,address,address,uint256,uint32,address,uint256,uint256,uint256):(bytes)",
+      "_getWeb3FunctionHash(address,address,uint256,address,address,uint256,uint32,address,uint256,uint256,uint256,bool):(bytes)",
       [
         ethereum.Value.fromAddress(_from),
         ethereum.Value.fromAddress(_to),
@@ -726,7 +620,8 @@ export class AutoPay extends ethereum.SmartContract {
         ethereum.Value.fromAddress(_destinationContract),
         ethereum.Value.fromUnsignedBigInt(_cycles),
         ethereum.Value.fromUnsignedBigInt(_startTime),
-        ethereum.Value.fromUnsignedBigInt(_interval)
+        ethereum.Value.fromUnsignedBigInt(_interval),
+        ethereum.Value.fromBoolean(_isForwardPaying)
       ]
     );
 
@@ -744,11 +639,12 @@ export class AutoPay extends ethereum.SmartContract {
     _destinationContract: Address,
     _cycles: BigInt,
     _startTime: BigInt,
-    _interval: BigInt
+    _interval: BigInt,
+    _isForwardPaying: boolean
   ): ethereum.CallResult<Bytes> {
     let result = super.tryCall(
       "_getWeb3FunctionHash",
-      "_getWeb3FunctionHash(address,address,uint256,address,address,uint256,uint32,address,uint256,uint256,uint256):(bytes)",
+      "_getWeb3FunctionHash(address,address,uint256,address,address,uint256,uint32,address,uint256,uint256,uint256,bool):(bytes)",
       [
         ethereum.Value.fromAddress(_from),
         ethereum.Value.fromAddress(_to),
@@ -760,90 +656,8 @@ export class AutoPay extends ethereum.SmartContract {
         ethereum.Value.fromAddress(_destinationContract),
         ethereum.Value.fromUnsignedBigInt(_cycles),
         ethereum.Value.fromUnsignedBigInt(_startTime),
-        ethereum.Value.fromUnsignedBigInt(_interval)
-      ]
-    );
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toBytes());
-  }
-
-  _getWeb3FunctionHash1(
-    _from: Address,
-    _to: Address,
-    _amount: BigInt,
-    _price: BigInt,
-    _fromToken: Address,
-    _toToken: Address,
-    _tokenA: Address,
-    _tokenB: Address,
-    _toChain: BigInt,
-    _destinationDomain: BigInt,
-    _destinationContract: Address,
-    _cycles: BigInt,
-    _startTime: BigInt,
-    _interval: BigInt
-  ): Bytes {
-    let result = super.call(
-      "_getWeb3FunctionHash",
-      "_getWeb3FunctionHash(address,address,uint256,uint256,address,address,address,address,uint256,uint32,address,uint256,uint256,uint256):(bytes)",
-      [
-        ethereum.Value.fromAddress(_from),
-        ethereum.Value.fromAddress(_to),
-        ethereum.Value.fromUnsignedBigInt(_amount),
-        ethereum.Value.fromUnsignedBigInt(_price),
-        ethereum.Value.fromAddress(_fromToken),
-        ethereum.Value.fromAddress(_toToken),
-        ethereum.Value.fromAddress(_tokenA),
-        ethereum.Value.fromAddress(_tokenB),
-        ethereum.Value.fromUnsignedBigInt(_toChain),
-        ethereum.Value.fromUnsignedBigInt(_destinationDomain),
-        ethereum.Value.fromAddress(_destinationContract),
-        ethereum.Value.fromUnsignedBigInt(_cycles),
-        ethereum.Value.fromUnsignedBigInt(_startTime),
-        ethereum.Value.fromUnsignedBigInt(_interval)
-      ]
-    );
-
-    return result[0].toBytes();
-  }
-
-  try__getWeb3FunctionHash1(
-    _from: Address,
-    _to: Address,
-    _amount: BigInt,
-    _price: BigInt,
-    _fromToken: Address,
-    _toToken: Address,
-    _tokenA: Address,
-    _tokenB: Address,
-    _toChain: BigInt,
-    _destinationDomain: BigInt,
-    _destinationContract: Address,
-    _cycles: BigInt,
-    _startTime: BigInt,
-    _interval: BigInt
-  ): ethereum.CallResult<Bytes> {
-    let result = super.tryCall(
-      "_getWeb3FunctionHash",
-      "_getWeb3FunctionHash(address,address,uint256,uint256,address,address,address,address,uint256,uint32,address,uint256,uint256,uint256):(bytes)",
-      [
-        ethereum.Value.fromAddress(_from),
-        ethereum.Value.fromAddress(_to),
-        ethereum.Value.fromUnsignedBigInt(_amount),
-        ethereum.Value.fromUnsignedBigInt(_price),
-        ethereum.Value.fromAddress(_fromToken),
-        ethereum.Value.fromAddress(_toToken),
-        ethereum.Value.fromAddress(_tokenA),
-        ethereum.Value.fromAddress(_tokenB),
-        ethereum.Value.fromUnsignedBigInt(_toChain),
-        ethereum.Value.fromUnsignedBigInt(_destinationDomain),
-        ethereum.Value.fromAddress(_destinationContract),
-        ethereum.Value.fromUnsignedBigInt(_cycles),
-        ethereum.Value.fromUnsignedBigInt(_startTime),
-        ethereum.Value.fromUnsignedBigInt(_interval)
+        ethereum.Value.fromUnsignedBigInt(_interval),
+        ethereum.Value.fromBoolean(_isForwardPaying)
       ]
     );
     if (result.reverted) {
@@ -898,6 +712,52 @@ export class AutoPay extends ethereum.SmartContract {
     }
     let value = result.value;
     return ethereum.CallResult.fromValue(value[0].toBigInt());
+  }
+
+  _web3functionHashes(param0: i32): string {
+    let result = super.call(
+      "_web3functionHashes",
+      "_web3functionHashes(uint8):(string)",
+      [ethereum.Value.fromUnsignedBigInt(BigInt.fromI32(param0))]
+    );
+
+    return result[0].toString();
+  }
+
+  try__web3functionHashes(param0: i32): ethereum.CallResult<string> {
+    let result = super.tryCall(
+      "_web3functionHashes",
+      "_web3functionHashes(uint8):(string)",
+      [ethereum.Value.fromUnsignedBigInt(BigInt.fromI32(param0))]
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toString());
+  }
+
+  _web3functionHashesNew(param0: i32): string {
+    let result = super.call(
+      "_web3functionHashesNew",
+      "_web3functionHashesNew(uint8):(string)",
+      [ethereum.Value.fromUnsignedBigInt(BigInt.fromI32(param0))]
+    );
+
+    return result[0].toString();
+  }
+
+  try__web3functionHashesNew(param0: i32): ethereum.CallResult<string> {
+    let result = super.tryCall(
+      "_web3functionHashesNew",
+      "_web3functionHashesNew(uint8):(string)",
+      [ethereum.Value.fromUnsignedBigInt(BigInt.fromI32(param0))]
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toString());
   }
 
   automate(): Address {
@@ -1305,256 +1165,6 @@ export class _cancelJobCall__Outputs {
   }
 }
 
-export class _conditionalAutomateCronCall extends ethereum.Call {
-  get inputs(): _conditionalAutomateCronCall__Inputs {
-    return new _conditionalAutomateCronCall__Inputs(this);
-  }
-
-  get outputs(): _conditionalAutomateCronCall__Outputs {
-    return new _conditionalAutomateCronCall__Outputs(this);
-  }
-}
-
-export class _conditionalAutomateCronCall__Inputs {
-  _call: _conditionalAutomateCronCall;
-
-  constructor(call: _conditionalAutomateCronCall) {
-    this._call = call;
-  }
-
-  get _from(): Address {
-    return this._call.inputValues[0].value.toAddress();
-  }
-
-  get _to(): Address {
-    return this._call.inputValues[1].value.toAddress();
-  }
-
-  get _amount(): BigInt {
-    return this._call.inputValues[2].value.toBigInt();
-  }
-
-  get _price(): BigInt {
-    return this._call.inputValues[3].value.toBigInt();
-  }
-
-  get _fromToken(): Address {
-    return this._call.inputValues[4].value.toAddress();
-  }
-
-  get _toToken(): Address {
-    return this._call.inputValues[5].value.toAddress();
-  }
-
-  get _toChain(): BigInt {
-    return this._call.inputValues[6].value.toBigInt();
-  }
-
-  get _destinationDomain(): BigInt {
-    return this._call.inputValues[7].value.toBigInt();
-  }
-
-  get _destinationContract(): Address {
-    return this._call.inputValues[8].value.toAddress();
-  }
-
-  get _cycles(): BigInt {
-    return this._call.inputValues[9].value.toBigInt();
-  }
-
-  get _startTime(): BigInt {
-    return this._call.inputValues[10].value.toBigInt();
-  }
-
-  get _interval(): BigInt {
-    return this._call.inputValues[11].value.toBigInt();
-  }
-
-  get _relayerFeeInTransactingAsset(): BigInt {
-    return this._call.inputValues[12].value.toBigInt();
-  }
-
-  get _swapper(): Address {
-    return this._call.inputValues[13].value.toAddress();
-  }
-
-  get _swapData(): Bytes {
-    return this._call.inputValues[14].value.toBytes();
-  }
-}
-
-export class _conditionalAutomateCronCall__Outputs {
-  _call: _conditionalAutomateCronCall;
-
-  constructor(call: _conditionalAutomateCronCall) {
-    this._call = call;
-  }
-}
-
-export class _createConditionalAutomateCall extends ethereum.Call {
-  get inputs(): _createConditionalAutomateCall__Inputs {
-    return new _createConditionalAutomateCall__Inputs(this);
-  }
-
-  get outputs(): _createConditionalAutomateCall__Outputs {
-    return new _createConditionalAutomateCall__Outputs(this);
-  }
-}
-
-export class _createConditionalAutomateCall__Inputs {
-  _call: _createConditionalAutomateCall;
-
-  constructor(call: _createConditionalAutomateCall) {
-    this._call = call;
-  }
-
-  get _to(): Address {
-    return this._call.inputValues[0].value.toAddress();
-  }
-
-  get _amount(): BigInt {
-    return this._call.inputValues[1].value.toBigInt();
-  }
-
-  get _price(): BigInt {
-    return this._call.inputValues[2].value.toBigInt();
-  }
-
-  get _fromToken(): Address {
-    return this._call.inputValues[3].value.toAddress();
-  }
-
-  get _toToken(): Address {
-    return this._call.inputValues[4].value.toAddress();
-  }
-
-  get _tokenA(): Address {
-    return this._call.inputValues[5].value.toAddress();
-  }
-
-  get _tokenB(): Address {
-    return this._call.inputValues[6].value.toAddress();
-  }
-
-  get _toChain(): BigInt {
-    return this._call.inputValues[7].value.toBigInt();
-  }
-
-  get _destinationDomain(): BigInt {
-    return this._call.inputValues[8].value.toBigInt();
-  }
-
-  get _destinationContract(): Address {
-    return this._call.inputValues[9].value.toAddress();
-  }
-
-  get _cycles(): BigInt {
-    return this._call.inputValues[10].value.toBigInt();
-  }
-
-  get _startTime(): BigInt {
-    return this._call.inputValues[11].value.toBigInt();
-  }
-
-  get _interval(): BigInt {
-    return this._call.inputValues[12].value.toBigInt();
-  }
-
-  get _web3FunctionHash(): string {
-    return this._call.inputValues[13].value.toString();
-  }
-}
-
-export class _createConditionalAutomateCall__Outputs {
-  _call: _createConditionalAutomateCall;
-
-  constructor(call: _createConditionalAutomateCall) {
-    this._call = call;
-  }
-}
-
-export class _createMultipleConditionalAutomateCall extends ethereum.Call {
-  get inputs(): _createMultipleConditionalAutomateCall__Inputs {
-    return new _createMultipleConditionalAutomateCall__Inputs(this);
-  }
-
-  get outputs(): _createMultipleConditionalAutomateCall__Outputs {
-    return new _createMultipleConditionalAutomateCall__Outputs(this);
-  }
-}
-
-export class _createMultipleConditionalAutomateCall__Inputs {
-  _call: _createMultipleConditionalAutomateCall;
-
-  constructor(call: _createMultipleConditionalAutomateCall) {
-    this._call = call;
-  }
-
-  get _to(): Array<Address> {
-    return this._call.inputValues[0].value.toAddressArray();
-  }
-
-  get _amount(): Array<BigInt> {
-    return this._call.inputValues[1].value.toBigIntArray();
-  }
-
-  get _price(): Array<BigInt> {
-    return this._call.inputValues[2].value.toBigIntArray();
-  }
-
-  get _fromToken(): Array<Address> {
-    return this._call.inputValues[3].value.toAddressArray();
-  }
-
-  get _toToken(): Array<Address> {
-    return this._call.inputValues[4].value.toAddressArray();
-  }
-
-  get _tokenA(): Array<Address> {
-    return this._call.inputValues[5].value.toAddressArray();
-  }
-
-  get _tokenB(): Array<Address> {
-    return this._call.inputValues[6].value.toAddressArray();
-  }
-
-  get _toChain(): Array<BigInt> {
-    return this._call.inputValues[7].value.toBigIntArray();
-  }
-
-  get _destinationDomain(): Array<BigInt> {
-    return this._call.inputValues[8].value.toBigIntArray();
-  }
-
-  get _destinationContract(): Array<Address> {
-    return this._call.inputValues[9].value.toAddressArray();
-  }
-
-  get _cycles(): Array<BigInt> {
-    return this._call.inputValues[10].value.toBigIntArray();
-  }
-
-  get _startTime(): Array<BigInt> {
-    return this._call.inputValues[11].value.toBigIntArray();
-  }
-
-  get _interval(): Array<BigInt> {
-    return this._call.inputValues[12].value.toBigIntArray();
-  }
-
-  get _web3FunctionHash(): string {
-    return this._call.inputValues[13].value.toString();
-  }
-}
-
-export class _createMultipleConditionalAutomateCall__Outputs {
-  _call: _createMultipleConditionalAutomateCall;
-
-  constructor(call: _createMultipleConditionalAutomateCall) {
-    this._call = call;
-  }
-}
-
 export class _createMultipleTimeAutomateCall extends ethereum.Call {
   get inputs(): _createMultipleTimeAutomateCall__Inputs {
     return new _createMultipleTimeAutomateCall__Inputs(this);
@@ -1612,8 +1222,8 @@ export class _createMultipleTimeAutomateCall__Inputs {
     return this._call.inputValues[9].value.toBigIntArray();
   }
 
-  get _web3FunctionHash(): string {
-    return this._call.inputValues[10].value.toString();
+  get _isForwardPaying(): boolean {
+    return this._call.inputValues[10].value.toBoolean();
   }
 }
 
@@ -1682,8 +1292,8 @@ export class _createTimeAutomateCall__Inputs {
     return this._call.inputValues[9].value.toBigInt();
   }
 
-  get _web3FunctionHash(): string {
-    return this._call.inputValues[10].value.toString();
+  get _isForwardPaying(): boolean {
+    return this._call.inputValues[10].value.toBoolean();
   }
 }
 
@@ -1691,6 +1301,36 @@ export class _createTimeAutomateCall__Outputs {
   _call: _createTimeAutomateCall;
 
   constructor(call: _createTimeAutomateCall) {
+    this._call = call;
+  }
+}
+
+export class _forceCancelGelatoCall extends ethereum.Call {
+  get inputs(): _forceCancelGelatoCall__Inputs {
+    return new _forceCancelGelatoCall__Inputs(this);
+  }
+
+  get outputs(): _forceCancelGelatoCall__Outputs {
+    return new _forceCancelGelatoCall__Outputs(this);
+  }
+}
+
+export class _forceCancelGelatoCall__Inputs {
+  _call: _forceCancelGelatoCall;
+
+  constructor(call: _forceCancelGelatoCall) {
+    this._call = call;
+  }
+
+  get _gelatoTaskID(): Bytes {
+    return this._call.inputValues[0].value.toBytes();
+  }
+}
+
+export class _forceCancelGelatoCall__Outputs {
+  _call: _forceCancelGelatoCall;
+
+  constructor(call: _forceCancelGelatoCall) {
     this._call = call;
   }
 }
@@ -1810,12 +1450,16 @@ export class _timeAutomateCronCall__Inputs {
     return this._call.inputValues[11].value.toBigInt();
   }
 
+  get _isForwardPaying(): boolean {
+    return this._call.inputValues[12].value.toBoolean();
+  }
+
   get _swapper(): Address {
-    return this._call.inputValues[12].value.toAddress();
+    return this._call.inputValues[13].value.toAddress();
   }
 
   get _swapData(): Bytes {
-    return this._call.inputValues[13].value.toBytes();
+    return this._call.inputValues[14].value.toBytes();
   }
 }
 
@@ -1823,32 +1467,6 @@ export class _timeAutomateCronCall__Outputs {
   _call: _timeAutomateCronCall;
 
   constructor(call: _timeAutomateCronCall) {
-    this._call = call;
-  }
-}
-
-export class _transferGasCall extends ethereum.Call {
-  get inputs(): _transferGasCall__Inputs {
-    return new _transferGasCall__Inputs(this);
-  }
-
-  get outputs(): _transferGasCall__Outputs {
-    return new _transferGasCall__Outputs(this);
-  }
-}
-
-export class _transferGasCall__Inputs {
-  _call: _transferGasCall;
-
-  constructor(call: _transferGasCall) {
-    this._call = call;
-  }
-}
-
-export class _transferGasCall__Outputs {
-  _call: _transferGasCall;
-
-  constructor(call: _transferGasCall) {
     this._call = call;
   }
 }
@@ -2053,6 +1671,40 @@ export class UpdateTreasuryCall__Outputs {
   _call: UpdateTreasuryCall;
 
   constructor(call: UpdateTreasuryCall) {
+    this._call = call;
+  }
+}
+
+export class UpdateWeb3functionHashesCall extends ethereum.Call {
+  get inputs(): UpdateWeb3functionHashesCall__Inputs {
+    return new UpdateWeb3functionHashesCall__Inputs(this);
+  }
+
+  get outputs(): UpdateWeb3functionHashesCall__Outputs {
+    return new UpdateWeb3functionHashesCall__Outputs(this);
+  }
+}
+
+export class UpdateWeb3functionHashesCall__Inputs {
+  _call: UpdateWeb3functionHashesCall;
+
+  constructor(call: UpdateWeb3functionHashesCall) {
+    this._call = call;
+  }
+
+  get _types(): Array<i32> {
+    return this._call.inputValues[0].value.toI32Array();
+  }
+
+  get _hashes(): Array<string> {
+    return this._call.inputValues[1].value.toStringArray();
+  }
+}
+
+export class UpdateWeb3functionHashesCall__Outputs {
+  _call: UpdateWeb3functionHashesCall;
+
+  constructor(call: UpdateWeb3functionHashesCall) {
     this._call = call;
   }
 }
